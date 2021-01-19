@@ -1,0 +1,10 @@
+/node_modules/
+/.project
+/.vscode
+/docs
+/test/report.txt
+/test/testdir
+/coverage/
+/test*.*
+/build
+/.nyc_output

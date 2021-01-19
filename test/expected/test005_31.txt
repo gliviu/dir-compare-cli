@@ -1,0 +1,5 @@
+[/] 3 <> 3 (broken-link) <broken-link>
+[/] 2 == 2 (directory)
+[/] 1 == 1 (file)
+Entries are different
+total: 3, equal: 2, distinct: 1, only left: 0, only right: 0, broken links: 1
