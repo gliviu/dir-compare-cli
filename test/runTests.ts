@@ -8,8 +8,6 @@ import util = require('util')
 import fs = require('fs')
 import os = require('os')
 import temp = require('temp')
-import defaultPrint = require('../src/cli/print')
-import Streams = require('memory-streams')
 import untar = require('./untar')
 import semver = require('semver')
 
@@ -100,7 +98,7 @@ const getExpected = function (test) {
 }
 
 function testCommandLineInternal(test, testDirPath, async, saveReport, runOptions: Partial<RunOptions>) {
-    return new Promise<void>(function (resolve, reject) {
+    return new Promise<void>(function (resolve) {
         const dircompareJs = pathUtils.normalize(__dirname + '/../src/cli/dircompare.js')
         process.chdir(testDirPath)
         let path1, path2
@@ -181,7 +179,7 @@ const printResult = function (output, expected) {
 }
 
 function validatePlatform(test: Partial<Test>) {
-    if(!test.excludePlatform || test.excludePlatform.length===0) {
+    if (!test.excludePlatform || test.excludePlatform.length === 0) {
         return true
     }
 
@@ -199,30 +197,30 @@ function executeTests(testDirPath, runOptions: Partial<RunOptions>) {
     console.log('Test dir: ' + testDirPath)
     const saveReport = !runOptions.noReport
     initReport(saveReport)
-    Promise.resolve(getTests(testDirPath)).then(function (tests) {
-        // Run command line tests
-        const commandLinePromises: Array<Promise<any>> = []
-        getTests(testDirPath).filter(function (test) { return !test.onlyLibrary; })
-            .filter(function (test) { return test.nodeVersionSupport === undefined || semver.satisfies(process.version, test.nodeVersionSupport) })
-            .filter(test => validatePlatform(test))
-            .filter(function (test) { return runOptions.singleTestName ? test.name === runOptions.singleTestName : true; })
-            .forEach(function (test) {
-                commandLinePromises.push(testCommandLine(test, testDirPath, saveReport, runOptions))
-            })
-        return Promise.all(commandLinePromises)
-    }).then(function () {
-        console.log()
-        console.log('Command line tests: ' + cmdLineCount + ', failed: ' + colors.yellow(cmdLineFailed.toString()) + ', succeeded: ' + colors.green(cmdLineSuccessful.toString()))
-    }).then(function () {
-        console.log()
-        console.log('All tests: ' + count + ', failed: ' + colors.yellow(failed.toString()) + ', succeeded: ' + colors.green(successful.toString()))
-        endReport(saveReport)
-        process.exitCode = failed > 0 ? 1 : 0
-        process.chdir(__dirname);  // allow temp dir to be removed
-    }).catch(error => {
-        console.error(error);
-        process.exit(1)
-    })
+    const commandLinePromises: Array<Promise<any>> = []
+    getTests()
+        .filter(function (test) { return test.nodeVersionSupport === undefined || semver.satisfies(process.version, test.nodeVersionSupport) })
+        .filter(test => validatePlatform(test))
+        .filter(function (test) { return runOptions.singleTestName ? test.name === runOptions.singleTestName : true; })
+        .forEach(function (test) {
+            commandLinePromises.push(testCommandLine(test, testDirPath, saveReport, runOptions))
+        })
+    Promise.all(commandLinePromises)
+        .then(function () {
+            console.log()
+            console.log('Command line tests: ' + cmdLineCount + ', failed: ' + colors.yellow(cmdLineFailed.toString()) + ', succeeded: ' + colors.green(cmdLineSuccessful.toString()))
+        })
+        .then(function () {
+            console.log()
+            console.log('All tests: ' + count + ', failed: ' + colors.yellow(failed.toString()) + ', succeeded: ' + colors.green(successful.toString()))
+            endReport(saveReport)
+            process.exitCode = failed > 0 ? 1 : 0
+            process.chdir(__dirname);  // allow temp dir to be removed
+        })
+        .catch(error => {
+            console.error(error);
+            process.exit(1)
+        })
 }
 
 
