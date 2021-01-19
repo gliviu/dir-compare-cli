@@ -17,5 +17,4 @@ node_js:
 script:
   - node --version
   - npm --version
-  - if [[ ${TRAVIS_NODE_VERSION} == node ]]; then npm run coverage; else npm test; fi;
-  - if [[ ${TRAVIS_NODE_VERSION} == node ]]; then codecov; else echo no codecov; fi;
+  - npm test
