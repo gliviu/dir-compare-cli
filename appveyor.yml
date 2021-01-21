@@ -1,6 +1,7 @@
 branches:
   only:
     - master
+    - ci-build
 init:
   - git config --global core.autocrlf true
 
