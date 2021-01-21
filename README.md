@@ -1,6 +1,6 @@
 dir-compare-cli
 ==========
-This is the command line utility for [dir-compare](https://github.com/gliviu/dir-compare).
+Node command line utility for directory comparison using [dir-compare](https://github.com/gliviu/dir-compare) library.
 
 [![Build Status](https://travis-ci.com/gliviu/dir-compare-cli.svg?branch=main)](https://travis-ci.com/gliviu/dir-compare-cli)
 [![Build status](https://ci.appveyor.com/api/projects/status/8yylihr3naarrt39?svg=true)](https://ci.appveyor.com/project/gliviu/dir-compare-cli)
