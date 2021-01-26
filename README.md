@@ -2,6 +2,8 @@ dir-compare-cli
 ==========
 Node command line utility for directory comparison using [dir-compare](https://github.com/gliviu/dir-compare) library.
 
+[![Build status](https://ci.appveyor.com/api/projects/status/8yylihr3naarrt39?svg=true)](https://ci.appveyor.com/project/gliviu/dir-compare-cli)
+
 # Installation
 ```shell
 $ npm install -g dir-compare-cli
