@@ -61,3 +61,21 @@ $ npm install -g dir-compare-cli
                              dircompare -f "**/tests/**/*.ts" dir1 dir2
 ```
 
+#  Glob patterns
+[Minimatch](https://www.npmjs.com/package/minimatch) patterns are used to include/exclude files to be compared.
+
+The pattern is matched against the relative path of the entry being compared.
+
+Following examples assume we are comparing two [dir-compare](https://github.com/gliviu/dir-compare) code bases.
+
+
+```
+dircompare -x ".git,node_modules" dir1 dir2')    exclude git and node modules directories
+dircompare -x "expected" dir1 dir2')             exclude '/tests/expected' directory
+dircompare -x "/tests/expected" dir1 dir2')      exclude '/tests/expected' directory
+dircompare -x "**/expected" dir1 dir2')          exclude '/tests/expected' directory
+dircompare -x "**/tests/**/*.js" dir1 dir2')     exclude all js files in '/tests' directory and subdirectories
+dircompare -f "*.js,*.yml" dir1 dir2')           include js and yaml files
+dircompare -f "/tests/**/*.js" dir1 dir2')       include all js files in '/tests' directory and subdirectories
+dircompare -f "**/tests/**/*.ts" dir1 dir2')     include all js files in '/tests' directory and subdirectories
+```
